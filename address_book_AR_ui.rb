@@ -32,6 +32,8 @@ def menu
       add_mailing_address
     when 'i'
       add_email_address
+    when 'l'
+      list_contacts
     when 'v'
       view_contacts
     when 'e'
@@ -157,8 +159,12 @@ choice = nil
   end
 end
     
+def list_contacts
+  puts "Here are all the contacts in your address book:"
+  contacts = Contact.all
+  contacts.each { |contact| puts contact.name }
+end
 
-    
 
 
 def view_contact
@@ -166,6 +172,27 @@ def view_contact
   contact_name = gets.chomp
   contact = Contact.new(:name => contact_name)
   puts "Here is the information for '#{contact_name}':"
+  puts "Name: #{contact.name}"
+
+  puts "Phone number(s):"
+  PhoneNumber.all.each do |phone|
+    if phone.contact_id == contact.id
+      puts "#{phone.kind}: #{phone.digits}"
+    end
+  end
+  puts "Email Address(es):"
+  EmailAddress.all.each do |email|
+    if email.contact_id == contact.id
+      puts "#{email.kind}: #{email.email}"
+    end
+  end
+  puts "Mailing Address(es):"
+  MailingAddress.all.each do |address|
+    if address.contact_id == contact.id
+      puts "#{address.kind}: #{address.display}"
+    end
+  end
+
 
 
   email = EmailAddress.new(:email => email_address, :kind => email_type, :contact_id => contact.id)

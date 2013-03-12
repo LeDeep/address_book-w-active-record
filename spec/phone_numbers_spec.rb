@@ -12,4 +12,12 @@ describe PhoneNumber do
     it {should belong_to :contact}
   end
 
+  context 'display' do
+    it 'formats the number' do
+      phone = PhoneNumber.new(:digits => '2345678910')
+      phone.save
+      phone.display.should eq '234.567.8910'
+    end
+  end
+
 end
